@@ -174,6 +174,7 @@
 
     const GROQ_API_KEY = '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';
     const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
     function sendMsg() {
       const q = input.value.trim();
@@ -202,30 +203,35 @@
         }
       ];
 
-      fetch(GROQ_API_URL, {
+      const payload = JSON.stringify({
+        model: 'mixtral-8x7b-32768',
+        messages: msgs,
+        temperature: 0.7,
+        max_tokens: 1024
+      });
+
+      const corsUrl = CORS_PROXY + encodeURIComponent(GROQ_API_URL);
+
+      fetch(corsUrl, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${GROQ_API_KEY}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          model: 'mixtral-8x7b-32768',
-          messages: msgs,
-          temperature: 0.7,
-          max_tokens: 1024
-        })
+        body: payload
       })
       .then(r => {
         if (!r.ok) {
           throw new Error('API error: ' + r.status);
         }
-        return r.json();
+        return r.text();
       })
-      .then(d => {
-        if (d.choices && d.choices[0] && d.choices[0].message) {
-          showAnswer(d.choices[0].message.content);
+      .then(text => {
+        const data = JSON.parse(text);
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          showAnswer(data.choices[0].message.content);
         } else {
-          showAnswer('Could not process response. Try again.');
+          showAnswer('Got unexpected response. Try again.');
         }
       })
       .catch(err => {
