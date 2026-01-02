@@ -174,7 +174,6 @@
 
     const GROQ_API_KEY = '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';
     const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
     function sendMsg() {
       const q = input.value.trim();
@@ -203,40 +202,50 @@
         }
       ];
 
-      const payload = JSON.stringify({
-        model: 'mixtral-8x7b-32768',
-        messages: msgs,
-        temperature: 0.7,
-        max_tokens: 1024
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({question: question})
+      })
+      .then(r => {
+        if (r.ok) return r.json();
+        throw new Error('backend not available');
+      })
+      .then(d => {
+        showAnswer(d.answer || 'Got a response');
+      })
+      .catch(err => {
+        callGroqDirect(msgs);
       });
+    }
 
-      const corsUrl = CORS_PROXY + encodeURIComponent(GROQ_API_URL);
-
-      fetch(corsUrl, {
+    function callGroqDirect(msgs) {
+      fetch(GROQ_API_URL, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${GROQ_API_KEY}`,
           'Content-Type': 'application/json'
         },
-        body: payload
+        body: JSON.stringify({
+          model: 'mixtral-8x7b-32768',
+          messages: msgs,
+          temperature: 0.7,
+          max_tokens: 1024
+        }),
+        mode: 'no-cors'
       })
-      .then(r => {
-        if (!r.ok) {
-          throw new Error('API error: ' + r.status);
-        }
-        return r.text();
-      })
-      .then(text => {
-        const data = JSON.parse(text);
-        if (data.choices && data.choices[0] && data.choices[0].message) {
-          showAnswer(data.choices[0].message.content);
+      .then(r => r.json())
+      .then(d => {
+        if (d.choices && d.choices[0]) {
+          showAnswer(d.choices[0].message.content);
         } else {
-          showAnswer('Got unexpected response. Try again.');
+          showAnswer('Got response from API');
         }
       })
       .catch(err => {
-        console.error('Error:', err);
-        showAnswer('Unable to fetch response. Please try again.');
+        showAnswer('Could not connect. Please start the backend server with: node server.js');
       });
     }
 
