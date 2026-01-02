@@ -38,19 +38,15 @@ button:disabled{opacity:0.6;cursor:not-allowed;}
 </div>
 <div class='content'>
 <div class='input-group'>
-<label class='input-label'>Ask any question</label>
-<label>कोई भी सवाल पूछें</label>
-<textarea id='input' placeholder='Ask anything...'></textarea>
+<label class='input-label'>Ask anything</label>
+<textarea id='input' placeholder='Ask any question...'></textarea>
 <button onclick='sendMsg()' id='sendBtn'>Search</button>
 </div>
-<div class='loading' id='loading'><div class='spinner'></div><span>Please wait...</span></div>
+<div class='loading' id='loading'><div class='spinner'></div><span>Processing with AI...</span></div>
 <div class='chat-area' id='chat'></div>
 </div>
 </div>
 <script>
-const GEMINI_API_KEY='AIzaSyBw2gp9ovaWkPTmdxb7EKDI_cF1jbhNvF0';
-const GEMINI_API_URL='https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
-
 function sendMsg(){
   let input=document.getElementById('input').value.trim();
   if(!input){
@@ -63,36 +59,21 @@ function sendMsg(){
   document.getElementById('loading').classList.add('show');
   document.getElementById('sendBtn').disabled=true;
   
-  callGemini(input);
-}
-
-function callGemini(query){
-  const payload={
-    contents:[
-      {
-        parts:[
-          {text:query}
-        ]
-      }
-    ]
-  };
-
-  fetch(GEMINI_API_URL+'?key='+GEMINI_API_KEY,{
+  fetch('/api/chat',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
+    body:JSON.stringify({query:input})
   })
   .then(resp=>resp.json())
   .then(data=>{
     document.getElementById('loading').classList.remove('show');
     document.getElementById('sendBtn').disabled=false;
     
-    if(data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]){
-      let reply=data.candidates[0].content.parts[0].text;
-      addMsg(reply,'bot');
+    if(data.response){
+      addMsg(data.response,'bot');
     }
     else if(data.error){
-      addMsg('Error: '+data.error.message,'bot');
+      addMsg('Error: '+data.error,'bot');
     }
     else{
       addMsg('Could not get response','bot');
@@ -101,7 +82,7 @@ function callGemini(query){
   .catch(err=>{
     document.getElementById('loading').classList.remove('show');
     document.getElementById('sendBtn').disabled=false;
-    addMsg('Error: '+err.message,'bot');
+    addMsg('Network error: '+err.message,'bot');
   });
 }
 
