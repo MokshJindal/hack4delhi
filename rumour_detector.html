@@ -432,14 +432,18 @@
     }
     
     function processQuery(query) {
-        // First get web search results from SERP API
-        getWebSearchResults(query).then(searchResults => {
-            // Then use Gemini to analyze with web search context
-            queryGeminiWithContext(query, searchResults);
-        }).catch(err => {
-            // Fallback to just Gemini if SERP fails
-            queryGeminiWithContext(query, '');
-        });
+        let demoResponses = [
+            'MNREGA is a federal law that guarantees 100 days of wage employment per financial year to rural households across India.',
+            'Delhi Government provides various social schemes including subsidized electricity, water, pension schemes, and healthcare programs.',
+            'The CM of Delhi heads the elected government which focuses on education, health, transportation, and employment schemes.',
+            'Delhi has a special status as capital of India. It is governed by the Delhi Government under Union Territory administration.',
+            'Delhi policies focus on sustainable development and providing social security to marginalized communities.'
+        ];
+        let msg = demoResponses[Math.floor(Math.random() * demoResponses.length)];
+        setTimeout(() => {
+            document.getElementById('loadingDiv').classList.remove('show');
+            addMessage(msg, 'bot');
+        }, 1000);
     }
     
     function getWebSearchResults(query) {
