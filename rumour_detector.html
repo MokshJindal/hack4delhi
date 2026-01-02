@@ -1,1 +1,279 @@
-<!DOCTYPE html><html><head><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><title>Delhi Policy Rumour Detector</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Segoe UI,sans-serif;background:#f5ede3;min-height:100vh;padding:20px}.container{max-width:1000px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);overflow:hidden}.header{background:linear-gradient(to right,#a74432,#c41e3a);color:#fff;padding:30px;text-align:center}.header h1{font-size:28px;font-weight:700;margin:10px 0}.header p{font-size:14px;opacity:0.9}.content{padding:30px}.input-group{margin-bottom:20px}.input-label{font-size:16px;font-weight:600;color:#333;margin-bottom:8px;display:block}label{font-size:13px;color:#888;display:block;margin-bottom:10px}textarea{width:100%;min-height:120px;padding:12px;border:2px solid #ddd;border-radius:6px;font-size:14px;font-family:inherit;resize:vertical}textarea:focus{outline:0;border-color:#a74432;background:#fffbf7}button{width:100%;padding:14px;background:#a74432;color:#fff;border:0;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;margin-top:15px;transition:all 0.3s}button:hover{background:#8a3729;box-shadow:0 4px 12px rgba(167,68,50,0.25)}button:disabled{opacity:0.6;cursor:not-allowed}.chat-area{margin-top:20px;background:#faf8f5;border:1px solid #ddd;border-radius:6px;min-height:300px;overflow-y:auto;padding:15px}.msg{margin-bottom:12px;padding:10px;border-radius:6px;font-size:13px;line-height:1.4}.msg.user{background:#a74432;color:#fff;text-align:right;margin-left:30%}.msg.bot{background:#ede9e1;color:#333;margin-right:30%;border-left:3px solid #a74432}.loading{display:none;text-align:center;color:#999;padding:20px}.loading.show{display:block}.spinner{display:inline-block;width:14px;height:14px;border:2px solid #ddd;border-top:2px solid #a74432;border-radius:50%;animation:spin 0.8s linear infinite}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style></head><body><div class=container><div class=header><h1>Delhi Policy Rumour Detector</h1><p>दिल्ली नीति अफवाह डिटेक्टर</p></div><div class=content><div class=input-group><label class=input-label>Ask any question</label><textarea id=input placeholder="Ask anything..."></textarea><button onclick="ask()" id=btn>Search</button></div><div class=loading id=loading><div class=spinner></div><span>Thinking...</span></div><div class=chat-area id=chat></div></div></div><script>function ask(){const q=document.getElementById('input').value.trim();if(!q){alert('type something');return}addMsg(q,'user');document.getElementById('input').value='';document.getElementById('loading').classList.add('show');document.getElementById('btn').disabled=true;setTimeout(()=>{document.getElementById('loading').classList.remove('show');document.getElementById('btn').disabled=false;const ql=q.toLowerCase();let ans='For more information, visit delhi.gov.in';if(ql.includes('cm')){ans='The Chief Minister of Delhi is Rekha Gupta since March 2024.'}else if(ql.includes('education')){ans='Delhi government offers education schemes including fee reimbursement for girls and skill development programs.'}else if(ql.includes('scheme')){ans='Key schemes: Scholarship for Girl Child, Free Electricity, Health through Mohalla Clinics, Housing Mission.'}else if(ql.includes('health')){ans='Delhi provides healthcare through Mohalla Clinics and is improving hospital infrastructure.'}else if(ql.includes('housing')){ans='Delhi Housing Mission provides affordable housing for economically weaker sections.'}else if(ql.includes('employment')){ans='Delhi offers skill development and job creation programs through government initiatives.'}else if(ql.includes('rumour')){ans='This tool helps verify Delhi government policies. Always cross-check with official sources.'}addMsg(ans,'bot')},1500)}function addMsg(t,s){const d=document.createElement('div');d.className='msg '+s;d.textContent=t;document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=document.getElementById('chat').scrollHeight}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delhi Policy Rumour Detector</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5ede3 0%, #ede9e1 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(to right, #a74432, #c41e3a);
+      color: #fff;
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      font-size: 15px;
+      opacity: 0.95;
+      font-weight: 300;
+    }
+    .content {
+      padding: 40px;
+    }
+    .input-group {
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+    textarea:focus {
+      outline: 0;
+      border-color: #a74432;
+      background: #fffbf7;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #a74432;
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: #8a3729;
+      box-shadow: 0 4px 14px rgba(167, 68, 50, 0.3);
+      transform: translateY(-2px);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .chat-area {
+      margin-top: 30px;
+      background: #faf8f5;
+      border: 1px solid #e0ddd8;
+      border-radius: 8px;
+      min-height: 350px;
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .msg {
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+    .msg.user {
+      background: #a74432;
+      color: #fff;
+      text-align: right;
+      margin-left: 20%;
+      border-radius: 12px 4px 12px 12px;
+    }
+    .msg.bot {
+      background: #ede9e1;
+      color: #333;
+      margin-right: 20%;
+      border-left: 4px solid #a74432;
+      border-radius: 4px 12px 12px 12px;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      color: #999;
+      padding: 20px;
+      font-size: 13px;
+    }
+    .loading.show {
+      display: block;
+    }
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ddd;
+      border-top-color: #a74432;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .error-msg {
+      background: #fee;
+      color: #c00;
+      border-left: 4px solid #c00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Delhi Policy Rumour Detector</h1>
+      <p>Get accurate information about Delhi government schemes and policies</p>
+    </div>
+    <div class="content">
+      <div class="input-group">
+        <label for="userInput">Ask any question about Delhi policies, schemes, or facts:</label>
+        <textarea id="userInput" placeholder="Type your question here... e.g., What is the current CM of Delhi? Is this scheme real?"></textarea>
+        <button id="sendBtn" onclick="sendMessage()">Send Question</button>
+      </div>
+      <div class="chat-area" id="chatArea">
+        <div class="loading" id="loading">
+          <span class="spinner"></span>Processing your question...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const chatArea = document.getElementById('chatArea');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const loading = document.getElementById('loading');
+
+    async function sendMessage() {
+      const question = userInput.value.trim();
+      if (!question) return;
+
+      // Add user message to chat
+      const userMsg = document.createElement('div');
+      userMsg.className = 'msg user';
+      userMsg.textContent = question;
+      chatArea.appendChild(userMsg);
+      
+      userInput.value = '';
+      sendBtn.disabled = true;
+      loading.classList.add('show');
+
+      try {
+        // Try to connect to backend first
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        }).catch(() => null);
+
+        if (response && response.ok) {
+          const data = await response.json();
+          displayBotMessage(data.answer);
+        } else {
+          // Fallback to direct API call if backend unavailable
+          await fetchDirectAnswer(question);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        displayBotMessage('Sorry, I could not process your question. Please try again.');
+      } finally {
+        loading.classList.remove('show');
+        sendBtn.disabled = false;
+        userInput.focus();
+      }
+    }
+
+    async function fetchDirectAnswer(question) {
+      try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer fa56797b2e8857d005bc131a33d2416a0b4b4f16fcf3afcf8ea822b765cd1cd4',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'mixtral-8x7b-32768',
+            messages: [
+              {
+                role: 'system',
+                content: 'You are a helpful AI assistant focused on Delhi government policies, schemes, and information. Answer questions accurately. Current CM of Delhi is Rekha Gupta.'
+              },
+              {
+                role: 'user',
+                content: question
+              }
+            ],
+            temperature: 0.7,
+            max_tokens: 1024
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const answer = data.choices[0].message.content;
+          displayBotMessage(answer);
+        } else {
+          displayBotMessage('Unable to fetch response. Please try again later.');
+        }
+      } catch (error) {
+        console.error('Direct fetch error:', error);
+        displayBotMessage('Network error. Please ensure you are connected to the internet.');
+      }
+    }
+
+    function displayBotMessage(text) {
+      const botMsg = document.createElement('div');
+      botMsg.className = 'msg bot';
+      botMsg.textContent = text;
+      chatArea.appendChild(botMsg);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    // Allow Enter key to send
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
