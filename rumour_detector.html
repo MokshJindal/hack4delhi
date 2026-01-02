@@ -2,313 +2,392 @@
 <html>
 <head>
 <meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <title>Delhi Rumour Detector</title>
 <style>
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-font-family: Arial, sans-serif;
-background: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
 }
 
-.top-bar {
-background: white;
-padding: 10px 40px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-bottom: 1px solid #ddd;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
 }
 
-.top-bar-left {
-display: flex;
-align-items: center;
-gap: 20px;
+.header {
+  background: linear-gradient(to right, #8B0000, #C41E3A, #8B0000);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+  border-bottom: 4px solid #FF6B35;
 }
 
-.flag-icon {
-font-size: 20px;
+.header .title-hindi {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
 }
 
-.title-section {
-text-align: center;
-padding: 25px 40px;
-background: linear-gradient(to right, #8B0000, #C41E3A, #8B0000);
-color: white;
-border-bottom: 3px solid #FF6B35;
+.header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-.title-section h1 {
-font-size: 22px;
-margin-bottom: 2px;
-font-weight: bold;
+.header p {
+  font-size: 14px;
+  opacity: 0.95;
+  line-height: 1.5;
 }
 
-.title-section .hindi {
-font-size: 24px;
-margin-bottom: 5px;
-font-weight: bold;
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0;
 }
 
-.title-section p {
-font-size: 13px;
-margin-top: 5px;
-opacity: 0.95;
+.tab-btn {
+  flex: 1;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  text-align: center;
 }
 
-.tabs-container {
-background: white;
-padding: 15px 40px;
-display: flex;
-justify-content: center;
-gap: 30px;
-border-bottom: 1px solid #ddd;
-flex-wrap: wrap;
+.tab-btn:hover {
+  background: #fff;
+  color: #8B0000;
+  border-bottom-color: #8B0000;
 }
 
-.tab {
-padding: 10px 15px;
-background: none;
-border: none;
-cursor: pointer;
-font-size: 14px;
-color: #666;
-border-bottom: 3px solid transparent;
-transition: all 0.3s;
-font-weight: 500;
-}
-
-.tab:hover {
-color: #8B0000;
-border-bottom-color: #8B0000;
-}
-
-.tab.active {
-color: #8B0000;
-border-bottom-color: #8B0000;
-font-weight: bold;
+.tab-btn.active {
+  background: white;
+  color: #8B0000;
+  border-bottom-color: #8B0000;
+  font-weight: 600;
 }
 
 .content {
-max-width: 1000px;
-margin: 30px auto;
-padding: 30px;
-background: white;
-border-radius: 6px;
-box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 40px 35px;
 }
 
-.section-title {
-font-size: 16px;
-font-weight: bold;
-color: #333;
-margin-bottom: 8px;
+.input-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  display: block;
 }
 
-.section-subtitle {
-font-size: 12px;
-color: #666;
-margin-bottom: 15px;
+.input-sublabel {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 12px;
+  display: block;
 }
 
 textarea {
-width: 100%;
-min-height: 140px;
-padding: 12px;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 14px;
-font-family: Arial, sans-serif;
-resize: vertical;
-margin-bottom: 15px;
+  width: 100%;
+  min-height: 160px;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Segoe UI', sans-serif;
+  resize: vertical;
+  transition: all 0.3s;
+  line-height: 1.5;
 }
 
 textarea:focus {
-outline: none;
-border-color: #8B0000;
-box-shadow: 0 0 4px rgba(139, 0, 0, 0.2);
+  outline: none;
+  border-color: #8B0000;
+  box-shadow: 0 0 0 4px rgba(139,0,0,0.1);
+  background: #fafafa;
 }
 
-.btn-verify {
-width: 100%;
-padding: 14px;
-background: #8B0000;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 15px;
-font-weight: bold;
-transition: background 0.3s;
-margin-bottom: 20px;
+.btn-search {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #8B0000, #C41E3A);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(139,0,0,0.2);
 }
 
-.btn-verify:hover {
-background: #6B0000;
+.btn-search:hover {
+  background: linear-gradient(135deg, #6B0000, #8B1530);
+  box-shadow: 0 6px 20px rgba(139,0,0,0.3);
+  transform: translateY(-2px);
 }
 
-.btn-verify:active {
-transform: scale(0.98);
+.btn-search:active {
+  transform: translateY(0);
 }
 
-.result-section {
-margin-top: 20px;
-padding: 15px;
-border: 1px solid #ddd;
-border-radius: 4px;
-background: #f9f9f9;
-display: none;
+.chat-box {
+  margin-top: 30px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 0;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
 }
 
-.result-section.show {
-display: block;
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.result-text {
-line-height: 1.6;
-color: #333;
-font-size: 13px;
+.msg {
+  display: flex;
+  margin-bottom: 5px;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msg.user {
+  justify-content: flex-end;
+}
+
+.msg-text {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  word-wrap: break-word;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.msg.bot .msg-text {
+  background: #e8eef5;
+  color: #333;
+  border-left: 3px solid #667eea;
+}
+
+.msg.user .msg-text {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 12px 2px 12px 12px;
 }
 
 .loading {
-text-align: center;
-padding: 20px;
-color: #666;
-display: none;
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  display: none;
 }
 
 .loading.show {
-display: block;
+  display: block;
 }
 
-.error-icon {
-font-size: 48px;
-text-align: center;
-color: #8B0000;
-margin: 15px 0;
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #8B0000;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @media (max-width: 768px) {
-.title-section,
-.tabs-container,
-.content {
-padding: 15px 20px;
-}
-.tabs-container {
-gap: 15px;
-}
+  .header {
+    padding: 25px 20px;
+  }
+  
+  .header .title-hindi {
+    font-size: 22px;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+  }
+  
+  .content {
+    padding: 20px 15px;
+  }
+  
+  .msg-text {
+    max-width: 90%;
+  }
+  
+  .tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    font-size: 13px;
+    padding: 12px 10px;
+  }
 }
 </style>
 </head>
 <body>
 
-<div class='top-bar'>
-<div class='top-bar-left'>
-<span class='flag-icon'>🇮🇳</span>
-<span>भारत</span>
-</div>
-<div class='top-bar-left'>
-<span>दिल्ली NCR</span>
-</div>
-</div>
-
-<div class='title-section'>
-<div class='hindi'>दिल्ली नीति अफवाह डिटेक्टर</div>
-<h1>Delhi Policy Rumour Detector</h1>
-<p>दिल्ली निवासियों और नीति निर्माताओं के लिए · For Delhi Residents & Policy Makers</p>
-</div>
-
-<div class='tabs-container'>
-<button class='tab active' onclick="switchTab(this)">योजनाएं / Schemes</button>
-<button class='tab' onclick="switchTab(this)">नीतियां / Policies</button>
-<button class='tab' onclick="switchTab(this)">सरकारी खबर / News</button>
-</div>
-
-<div class='content'>
-<div class='section-title'>दिल्ली/भारत की नीति, योजना या विषय के बारे में संदेश दर्ज करें</div>
-<div class='section-subtitle'>Enter message about Delhi/India policy, scheme, or bill</div>
-
-<textarea id='userMsg' placeholder='is MNREGA policy removed?'></textarea>
-
-<button class='btn-verify' onclick='checkMsg()'>🔍 लाइव वेब खोज के साथ सत्यापित करें / Verify with Live Web Search</button>
-
-<div class='loading' id='loadDiv'>
-<p>Checking... कृपया प्रतीक्षा करें</p>
-</div>
-
-<div class='result-section' id='resultDiv'>
-<div class='result-text' id='resultTxt'></div>
-</div>
-
-<div class='error-icon' id='errIcon' style='display:none;'>✗</div>
+<div class='container'>
+  <div class='header'>
+    <div class='title-hindi'>दिल्ली नीति अफवाह डिटेक्टर</div>
+    <h1>Delhi Policy Rumour Detector</h1>
+    <p>दिल्ली निवासियों और नीति निर्माताओं के लिए · For Delhi Residents & Policy Makers</p>
+  </div>
+  
+  <div class='tabs'>
+    <button class='tab-btn active' onclick='switchTab(this, "schemes")'>📋 योजनाएं / Schemes</button>
+    <button class='tab-btn' onclick='switchTab(this, "policies")'>📋 नीतियां / Policies</button>
+    <button class='tab-btn' onclick='switchTab(this, "news")'>🗣️ सरकारी खबर / News</button>
+  </div>
+  
+  <div class='content'>
+    <label class='input-label'>दिल्ली/भारत के बारे में कोई भी सवाल पूछें</label>
+    <label class='input-sublabel'>Ask any question about Delhi/India policies, schemes, facts, or verify rumors</label>
+    
+    <textarea id='userInput' placeholder='Example: What is PM-JAY? Is MNREGA removed? Who is the CM of Delhi?'></textarea>
+    
+    <button class='btn-search' onclick='sendQuery()'>🔍 सवाल पूछें / Ask Question</button>
+    
+    <div class='chat-box'>
+      <div class='messages' id='messages'>
+        <div class='msg bot'>
+          <div class='msg-text'>👋 नमस्ते! मैं आपके किसी भी सवाल का जवाब दे सकता हूँ। सवाल पूछिए!</div>
+        </div>
+      </div>
+      
+      <div class='loading' id='loadingDiv'>
+        <div class='spinner'></div>
+        <p>Wait a moment... कृपया प्रतीक्षा करें</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-const API_KEY = 'AIzaSyBw2gp9ovaWkPTmdxb7EKDI_cF1jbhNvF0';
-const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+let currentTab = 'schemes';
 
-function switchTab(elem) {
-let tabs = document.querySelectorAll('.tab');
-tabs.forEach(t => t.classList.remove('active'));
-elem.classList.add('active');
+function switchTab(elem, tab) {
+  let btns = document.querySelectorAll('.tab-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  elem.classList.add('active');
+  currentTab = tab;
 }
 
-function checkMsg() {
-let msg = document.getElementById('userMsg').value.trim();
-
-if (!msg) {
-alert('please type something');
-return;
+function sendQuery() {
+  let input = document.getElementById('userInput').value.trim();
+  
+  if (!input) {
+    alert('please type something first');
+    return;
+  }
+  
+  addMessage(input, 'user');
+  document.getElementById('userInput').value = '';
+  
+  document.getElementById('loadingDiv').classList.add('show');
+  
+  // use free llm api
+  callAI(input);
 }
 
-let loadDiv = document.getElementById('loadDiv');
-let resultDiv = document.getElementById('resultDiv');
-
-loadDiv.classList.add('show');
-resultDiv.classList.remove('show');
-
-sendToGemini(msg);
+function addMessage(text, sender) {
+  let messagesDiv = document.getElementById('messages');
+  let msgDiv = document.createElement('div');
+  msgDiv.className = 'msg ' + sender;
+  
+  let textDiv = document.createElement('div');
+  textDiv.className = 'msg-text';
+  textDiv.textContent = text;
+  
+  msgDiv.appendChild(textDiv);
+  messagesDiv.appendChild(msgDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-function sendToGemini(query) {
-let prompt = query;
-
-fetch(API_ENDPOINT + '?key=' + API_KEY, {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify({
-contents: [{
-parts: [{
-text: prompt
-}]
-}]
-})
-})
-.then(resp => resp.json())
-.then(data => {
-document.getElementById('loadDiv').classList.remove('show');
-
-if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-let text = data.candidates[0].content.parts[0].text;
-document.getElementById('resultTxt').innerHTML = text.replace(/\n/g, '<br>');
-document.getElementById('resultDiv').classList.add('show');
-} else {
-document.getElementById('resultTxt').innerHTML = 'Error: ' + (data.error ? data.error.message : 'Unknown error');
-document.getElementById('resultDiv').classList.add('show');
-}
-})
-.catch(err => {
-document.getElementById('loadDiv').classList.remove('show');
-document.getElementById('resultTxt').innerHTML = 'Error: ' + err.message;
-document.getElementById('resultDiv').classList.add('show');
-});
+function callAI(query) {
+  // using free api endpoint
+  let payload = {
+    'model': 'gpt-3.5-turbo',
+    'messages': [
+      {'role': 'system', 'content': 'You are a helpful assistant answering questions about India and Delhi government policies, schemes, and facts. Provide accurate, concise information.'},
+      {'role': 'user', 'content': query}
+    ],
+    'temperature': 0.7,
+    'max_tokens': 500
+  };
+  
+  fetch('https://api.openai.com/v1/chat/completions', {
+    'method': 'POST',
+    'headers': {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer sk-proj-abc123def456'
+    },
+    'body': JSON.stringify(payload)
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    document.getElementById('loadingDiv').classList.remove('show');
+    
+    if (data.choices && data.choices[0]) {
+      let reply = data.choices[0].message.content;
+      addMessage(reply, 'bot');
+    } else {
+      addMessage('Sorry, I couldn\'t process that. Try again.', 'bot');
+    }
+  })
+  .catch(err => {
+    document.getElementById('loadingDiv').classList.remove('show');
+    addMessage('Error: ' + err.message, 'bot');
+  });
 }
 </script>
 
