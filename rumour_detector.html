@@ -1,271 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delhi Policy Rumour Detector</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Segoe UI, Arial, sans-serif;
-      background: #f5ede3;
-      min-height: 100vh;
-      padding: 15px;
-    }
-
-    .container {
-      max-width: 950px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-
-    .header {
-      background: linear-gradient(to right, #a74432, #c41e3a);
-      color: white;
-      padding: 35px 30px;
-      text-align: center;
-    }
-
-    .header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    .header p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .content {
-      padding: 30px;
-    }
-
-    .input-section {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 10px;
-    }
-
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      font-family: inherit;
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: #a74432;
-      background-color: #fffbf7;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #a74432;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: #8a3729;
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .chat {
-      margin-top: 25px;
-      background: #faf8f5;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 15px;
-      min-height: 300px;
-      max-height: 450px;
-      overflow-y: auto;
-    }
-
-    .message {
-      margin-bottom: 12px;
-      padding: 10px 12px;
-      border-radius: 5px;
-      font-size: 13px;
-      line-height: 1.4;
-      word-wrap: break-word;
-    }
-
-    .user-msg {
-      background: #a74432;
-      color: white;
-      text-align: right;
-      margin-left: 25%;
-      border-radius: 8px 4px 8px 8px;
-    }
-
-    .bot-msg {
-      background: #ede9e1;
-      color: #333;
-      margin-right: 25%;
-      border-left: 3px solid #a74432;
-      border-radius: 4px 8px 8px 8px;
-    }
-
-    .loading {
-      text-align: center;
-      color: #999;
-      font-size: 12px;
-      display: none;
-    }
-
-    .loading.show {
-      display: block;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delhi Policy Rumour Detector</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Segoe UI, Arial, sans-serif; background: #f5ede3; min-height: 100vh; padding: 15px; }
+        .container { max-width: 950px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(to right, #a74432, #c41e3a); color: white; padding: 35px 30px; text-align: center; }
+        .header h1 { font-size: 30px; margin-bottom: 8px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px; }
+        label { display: block; font-weight: 600; color: #333; margin-bottom: 10px; }
+        textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; min-height: 100px; }
+        textarea:focus { outline: none; border-color: #a74432; background-color: #fffbf7; }
+        button { width: 100%; padding: 12px; background: #a74432; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #8a3729; }
+        button:disabled { opacity: 0.5; }
+        .chat { margin-top: 25px; background: #faf8f5; border: 1px solid #ddd; border-radius: 6px; padding: 15px; min-height: 300px; max-height: 450px; overflow-y: auto; }
+        .message { margin-bottom: 12px; padding: 10px 12px; border-radius: 5px; font-size: 13px; }
+        .user-msg { background: #a74432; color: white; text-align: right; margin-left: 25%; }
+        .bot-msg { background: #ede9e1; color: #333; margin-right: 25%; border-left: 3px solid #a74432; }
+        .loading { text-align: center; color: #999; display: none; }
+        .loading.show { display: block; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Delhi Policy Rumour Detector</h1>
-      <p>Check facts about Delhi government and policies</p>
+    <div class="container">
+        <div class="header">
+            <h1>Delhi Policy Rumour Detector</h1>
+            <p>Check facts about Delhi government and policies</p>
+        </div>
+        <div class="content">
+            <div>
+                <label>Ask your question:</label>
+                <textarea id="question" placeholder="Ask me anything about Delhi..."></textarea>
+                <button onclick="send()">Send Question</button>
+                <div id="loading" class="loading">Thinking...</div>
+            </div>
+            <div id="chat" class="chat"></div>
+        </div>
     </div>
-    <div class="content">
-      <div class="input-section">
-        <label>Ask your question:</label>
-        <textarea id="question" placeholder="Ask me anything about Delhi government schemes, policies, or facts..."></textarea>
-        <button onclick="sendMsg()">Send Question</button>
-      </div>
-      <div id="loading" class="loading">Thinking...</div>
-      <div id="chat" class="chat"></div>
-    </div>
-  </div>
 
-  <script>
-    const chat = document.getElementById('chat');
-    const input = document.getElementById('question');
-    const btn = document.querySelector('button');
-    const loading = document.getElementById('loading');
+    <script>
+        function send() {
+            const q = document.getElementById('question').value.trim();
+            if (!q) return;
 
-    const GROQ_API_KEY = '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';
-    const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+            let userMsg = document.createElement('div');
+            userMsg.className = 'message user-msg';
+            userMsg.textContent = q;
+            document.getElementById('chat').appendChild(userMsg);
+            document.getElementById('question').value = '';
+            document.querySelector('button').disabled = true;
+            document.getElementById('loading').classList.add('show');
 
-    function sendMsg() {
-      const q = input.value.trim();
-      if (!q) return;
-
-      let userMsg = document.createElement('div');
-      userMsg.className = 'message user-msg';
-      userMsg.textContent = q;
-      chat.appendChild(userMsg);
-      input.value = '';
-      btn.disabled = true;
-      loading.classList.add('show');
-
-      fetchAnswer(q);
-    }
-
-    function fetchAnswer(question) {
-      const msgs = [
-        {
-          role: 'system',
-          content: 'You are a knowledgeable assistant about Delhi government policies, schemes, and facts. Current CM of Delhi: Rekha Gupta. Provide accurate, concise information about Delhi government initiatives, welfare schemes, policies, and factual information. Answer any general questions as well.'
-        },
-        {
-          role: 'user',
-          content: question
+            fetch('http://localhost:3000/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({question: q})
+            })
+            .then(r => r.json())
+            .then(d => show(d.answer || 'No response'))
+            .catch(e => show('Could not connect. Is server running?'));
         }
-      ];
 
-      fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({question: question})
-      })
-      .then(r => {
-        if (r.ok) return r.json();
-        throw new Error('backend not available');
-      })
-      .then(d => {
-        showAnswer(d.answer || 'Got a response');
-      })
-      .catch(err => {
-        callGroqDirect(msgs);
-      });
-    }
-
-    function callGroqDirect(msgs) {
-      fetch(GROQ_API_URL, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${GROQ_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: 'mixtral-8x7b-32768',
-          messages: msgs,
-          temperature: 0.7,
-          max_tokens: 1024
-        }),
-        mode: 'no-cors'
-      })
-      .then(r => r.json())
-      .then(d => {
-        if (d.choices && d.choices[0]) {
-          showAnswer(d.choices[0].message.content);
-        } else {
-          showAnswer('Got response from API');
+        function show(text) {
+            let botMsg = document.createElement('div');
+            botMsg.className = 'message bot-msg';
+            botMsg.textContent = text;
+            document.getElementById('chat').appendChild(botMsg);
+            document.getElementById('loading').classList.remove('show');
+            document.querySelector('button').disabled = false;
         }
-      })
-      .catch(err => {
-        showAnswer('Could not connect. Please start the backend server with: node server.js');
-      });
-    }
 
-    function showAnswer(text) {
-      let botMsg = document.createElement('div');
-      botMsg.className = 'message bot-msg';
-      botMsg.textContent = text;
-      chat.appendChild(botMsg);
-      chat.scrollTop = chat.scrollHeight;
-      loading.classList.remove('show');
-      btn.disabled = false;
-      input.focus();
-    }
-
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMsg();
-      }
-    });
-  </script>
+        document.getElementById('question').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                send();
+            }
+        });
+    </script>
 </body>
 </html>
