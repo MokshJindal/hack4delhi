@@ -1,53 +1,35 @@
-# Quick Setup for Rumour Detector
+# quick start for the rumour detector
 
-## What's Been Fixed
-Your Rumour Detector chatbot is now ready for deployment! Here's what was done:
+so you wanna get this thing running? cool, it's actually super easy. im gonna walk you through it real quick.
 
-1. **Gemini API Key Security** - Moved the hardcoded API key out of the code and into environment variables
-2. **Environment Template** - Created .env.example so you know what config you need
-3. **Deployment Guide** - Full instructions on how to deploy to Render in DEPLOYMENT.md
+## what we fixed
 
-## For Local Testing (Next 5 Minutes)
+basically we moved the api key out of the code and into environment variables so your secret stuff stays secret. we also set up some docs to help you get this going.
 
-1. Copy the example env file:
-   `cp .env.example .env`
+## running it locally (literally 5 minutes)
 
-2. Edit .env and paste your Gemini API key there (the one you shared)
+go to your terminal and do this:
 
-3. Install packages:
-   `npm install`
+1. cd hack4delhi
+2. cp .env.example .env
+3. open .env and paste your gemini key where it says your_gemini_api_key_here
+4. npm install
+5. npm start
 
-4. Start the server:
-   `npm start`
+then go to http://localhost:3000 in your browser. you should see the dashboard thing. click on rumour verifier and try asking it a question. if you get an answer back, congrats it works!
 
-5. Open your browser and go to http://localhost:3000
+## deploying to render (when youre ready)
 
-That's it! Your chatbot should be working locally.
+once local is working, read DEPLOYMENT.md. its all there - basically just connect your github repo to render, add the env var, and youre done. render auto deploys when you push.
 
-## For Render Deployment (When Ready)
+## if something breaks
 
-Read through DEPLOYMENT.md - it's got everything you need to get this running on the cloud.
+common issues:
+- modules missing: run npm install again
+- port already in use: change PORT in .env to like 3001
+- api key not working: double check its actually in the .env file
+- chatbot says server error: check your internet, check gemini key is valid
 
-The main steps are:
-1. Push your code to GitHub (it's already there)
-2. Connect your repo to Render
-3. Add the GEMINI_API_KEY as an environment variable on Render
-4. Done - Render will auto-deploy
+## questions?
 
-## Important Security Notes
-
-**Never put API keys in your code!** 
-We moved it to environment variables, so keep it that way.
-
-**Don't commit .env files to GitHub!**
-The .gitignore should already have this, but double-check.
-
-## Troubleshooting
-
-- **Local: "Cannot find module 'cors'"?** → Run `npm install` again
-- **Local: Port already in use?** → Change PORT in .env to 3001 or 3002
-- **Render: 503 error?** → The free tier takes 30-60 seconds to start up, just wait a bit
-- **Render: API not working?** → Make sure GEMINI_API_KEY env var is set in Render dashboard
-
-## Questions?
-Check DEPLOYMENT.md for more detailed info, or look at the code comments in server.js
+read DEPLOYMENT.md for more details or check the comments in server.js
