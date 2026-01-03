@@ -56,14 +56,14 @@
             document.querySelector('button').disabled = true;
             document.getElementById('loading').classList.add('show');
 
-            fetch('http://localhost:3000/api/chat', {
+            fetch('https://hack4delhi-backend.onrender.com/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({question: q})
             })
             .then(r => r.json())
             .then(d => show(d.answer || 'No response'))
-            .catch(e => show('Could not connect. Is server running?'));
+            .catch(e => show('Server error. Please try again.'));
         }
 
         function show(text) {
